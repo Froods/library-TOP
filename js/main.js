@@ -59,12 +59,18 @@ function displayLibrary() {
         divButtons.classList.add("card-button-container");
 
         const btnRead = document.createElement("button");
-        btnRead.textContent = "Reading";
         btnRead.classList.add("btn-read");
+        if (library[i].read) {
+            btnRead.classList.add("done");
+            btnRead.textContent = "Read";
+        } else {
+            btnRead.textContent = "Reading";
+        }
+        
 
         const btnRemove = document.createElement("button");
-        btnRemove.textContent = "Remove";
         btnRemove.classList.add("btn-remove");
+        btnRemove.textContent = "Remove";
 
         divButtons.appendChild(btnRead);
         divButtons.appendChild(btnRemove);
@@ -72,12 +78,20 @@ function displayLibrary() {
         // Event listener for read button
         btnRead.addEventListener("click", () => {
             if (btnRead.classList.contains("done")) {
+                library[i].read = false;
                 btnRead.textContent = "Reading";
                 btnRead.classList.remove("done");
             } else {
+                library[i].read = true;
                 btnRead.classList.add("done");
                 btnRead.textContent = "Read";
             }
+        })
+
+        btnRemove.addEventListener("click", () => {
+            library.splice(i, 1);
+            clearLibrary();
+            displayLibrary();
         })
 
         // Append info to book-card
@@ -149,12 +163,3 @@ btnClose.addEventListener("click", (e) => {
 
     popup.close();
 })
-
-
-addBookToLibrary("harry p", "diller", 7);
-addBookToLibrary("peter", "sandal", 12);
-addBookToLibrary("harry p", "diller", 7);
-addBookToLibrary("peter", "sandal", 12);
-addBookToLibrary("harry p", "diller", 7);
-addBookToLibrary("peter", "sandal", 12);
-displayLibrary();
