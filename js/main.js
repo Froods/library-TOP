@@ -3,7 +3,17 @@ const library = [];
 
 // Variable for library div
 const elemLibrary = document.querySelector(".library");
-
+// Variable for popup button
+const btnNewBook = document.querySelector(".new-book");
+// Variable for popup
+const popup = document.querySelector("[popup]")
+// Buttons inside popup
+const btnAdd = document.querySelector(".add");
+const btnClose = document.querySelector(".close");
+// Inputs inside popup
+const inputTitle = document.querySelector("#title")
+const inputAuthor = document.querySelector("#author")
+const inputPages = document.querySelector("#pages")
 
 // Constructor for book objects
 function Book(title, author, pages) {
@@ -21,13 +31,14 @@ function addBookToLibrary(title, author, pages) {
     library.push(book);
 }
 
+// Function for displaying all books contained in library
 function displayLibrary() {
     for (let i = 0; i < library.length; i++) {
         // Create element for the book-card
         const book = document.createElement("div");
         book.classList.add("book")
 
-        // Create sub-elements for the book-card
+        // Create info elements for card
         const titleHeader = document.createElement("h2");
         titleHeader.textContent = "Title";
         const title = document.createElement("h3");
@@ -43,7 +54,31 @@ function displayLibrary() {
         const pages = document.createElement("h3");
         pages.textContent = library[i].pages;
 
+        // Create button for card and put them inside div
+        const divButtons = document.createElement("div");
+        divButtons.classList.add("card-button-container");
 
+        const btnRead = document.createElement("button");
+        btnRead.textContent = "Reading";
+        btnRead.classList.add("btn-read");
+
+        const btnRemove = document.createElement("button");
+        btnRemove.textContent = "Remove";
+        btnRemove.classList.add("btn-remove");
+
+        divButtons.appendChild(btnRead);
+        divButtons.appendChild(btnRemove);
+
+        // Event listener for read button
+        btnRead.addEventListener("click", () => {
+            if (btnRead.classList.contains("done")) {
+                btnRead.textContent = "Reading";
+                btnRead.classList.remove("done");
+            } else {
+                btnRead.classList.add("done");
+                btnRead.textContent = "Read";
+            }
+        })
 
         // Append info to book-card
         book.appendChild(titleHeader);
@@ -55,11 +90,71 @@ function displayLibrary() {
         book.appendChild(pagesHeader);
         book.appendChild(pages);
 
+        book.appendChild(divButtons);
+
         // Add book to library div
         elemLibrary.appendChild(book);
     }
 }
 
+// Function for clearing library
+function clearLibrary() {
+    let child = elemLibrary.lastElementChild;
+    while (child) {
+        elemLibrary.removeChild(child);
+        child = elemLibrary.lastElementChild;
+    }
+}
+
+/// Event listeners
+
+// New book button
+btnNewBook.addEventListener("click", () => {
+    popup.showModal();
+})
+
+// Add book button
+btnAdd.addEventListener("click", (e) => {
+    e.preventDefault(); // Cancel default form button functionallity
+
+    // Values for new book properties
+    const nBookTitle = inputTitle.value;
+    const nBookAuthor = inputAuthor.value;
+    const nBookPages = inputPages.value;
+
+    if (nBookTitle != false && nBookAuthor != false && nBookPages != false) {
+        // Add book, clear old and display new library, reset input values, close popup
+
+        addBookToLibrary(nBookTitle, nBookAuthor, nBookPages);
+
+        clearLibrary();
+        displayLibrary();
+
+        inputTitle.value = "";
+        inputAuthor.value = "";
+        inputPages.value = "";
+
+        popup.close();
+    }
+    
+})
+
+// Close popup button
+btnClose.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    inputTitle.value = "";
+    inputAuthor.value = "";
+    inputPages.value = "";
+
+    popup.close();
+})
+
+
+addBookToLibrary("harry p", "diller", 7);
+addBookToLibrary("peter", "sandal", 12);
+addBookToLibrary("harry p", "diller", 7);
+addBookToLibrary("peter", "sandal", 12);
 addBookToLibrary("harry p", "diller", 7);
 addBookToLibrary("peter", "sandal", 12);
 displayLibrary();
