@@ -16,19 +16,22 @@ const inputAuthor = document.querySelector("#author")
 const inputPages = document.querySelector("#pages")
 
 // Constructor for book objects
-function Book(title, author, pages) {
+/* function Book(title, author, pages) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = false;
     this.id = crypto.randomUUID();
-}
+} */
 
-// Function for adding new books
-function addBookToLibrary(title, author, pages) {
-    const book = new Book(title, author, pages);
-
-    library.push(book);
+class Book {
+    constructor(title, author, pages) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = false;
+    this.id = crypto.randomUUID();
+    }
 }
 
 // Function for displaying all books contained in library
@@ -109,6 +112,13 @@ function displayLibrary() {
         // Add book to library div
         elemLibrary.appendChild(book);
     }
+}
+
+// Function for adding new books
+function addBookToLibrary(title, author, pages) {
+    const book = new Book(title, author, pages);
+
+    library.push(book);
 }
 
 // Function for clearing library
