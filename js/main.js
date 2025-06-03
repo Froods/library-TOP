@@ -87,7 +87,7 @@ class Controller {
 
             btnRemove.addEventListener("click", () => {
                 library.splice(i, 1);
-                clearLibrary();
+                this.clearLibrary();
                 this.displayLibrary();
             })
 
@@ -108,30 +108,25 @@ class Controller {
         }
     }
 
+    // Function for adding new books
     addBookToLibrary(title, author, pages) {
-    const book = new Book(title, author, pages);
+        const book = new Book(title, author, pages);
 
-    library.push(book);
-}
-}
+        library.push(book);
+    }
 
-const cntrlr = new Controller();
-
-// Function for adding new books
-/* function addBookToLibrary(title, author, pages) {
-    const book = new Book(title, author, pages);
-
-    library.push(book);
-} */
-
-// Function for clearing library
-function clearLibrary() {
-    let child = elemLibrary.lastElementChild;
-    while (child) {
-        elemLibrary.removeChild(child);
-        child = elemLibrary.lastElementChild;
+    // Function for clearing library
+    clearLibrary() {
+        let child = elemLibrary.lastElementChild;
+        while (child) {
+            elemLibrary.removeChild(child);
+            child = elemLibrary.lastElementChild;
+        }
     }
 }
+
+// Declare new object from Controller class
+const cntrlr = new Controller();
 
 /// Event listeners
 
@@ -154,7 +149,7 @@ btnAdd.addEventListener("click", (e) => {
 
         cntrlr.addBookToLibrary(nBookTitle, nBookAuthor, nBookPages);
 
-        clearLibrary();
+        cntrlr.clearLibrary();
         cntrlr.displayLibrary();
 
         inputTitle.value = "";
