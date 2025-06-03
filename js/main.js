@@ -15,15 +15,7 @@ const inputTitle = document.querySelector("#title")
 const inputAuthor = document.querySelector("#author")
 const inputPages = document.querySelector("#pages")
 
-// Constructor for book objects
-/* function Book(title, author, pages) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = false;
-    this.id = crypto.randomUUID();
-} */
-
+// Class for book objects
 class Book {
     constructor(title, author, pages) {
     this.title = title;
@@ -34,9 +26,92 @@ class Book {
     }
 }
 
+class Controller {
+    displayLibrary() {
+        for (let i = 0; i < library.length; i++) {
+            // Create element for the book-card
+            const book = document.createElement("div");
+            book.classList.add("book")
+
+            // Create info elements for card
+            const titleHeader = document.createElement("h2");
+            titleHeader.textContent = "Title";
+            const title = document.createElement("h3");
+            title.textContent = library[i].title;
+
+            const authorHeader = document.createElement("h2");
+            authorHeader.textContent = "Author";
+            const author = document.createElement("h3");
+            author.textContent = library[i].author;
+
+            const pagesHeader = document.createElement("h2");
+            pagesHeader.textContent = "Pages";
+            const pages = document.createElement("h3");
+            pages.textContent = library[i].pages;
+
+            // Create button for card and put them inside div
+            const divButtons = document.createElement("div");
+            divButtons.classList.add("card-button-container");
+
+            const btnRead = document.createElement("button");
+            btnRead.classList.add("btn-read");
+            if (library[i].read) {
+                btnRead.classList.add("done");
+                btnRead.textContent = "Read";
+            } else {
+                btnRead.textContent = "Reading";
+            }
+            
+
+            const btnRemove = document.createElement("button");
+            btnRemove.classList.add("btn-remove");
+            btnRemove.textContent = "Remove";
+
+            divButtons.appendChild(btnRead);
+            divButtons.appendChild(btnRemove);
+
+            // Event listener for read button
+            btnRead.addEventListener("click", () => {
+                if (btnRead.classList.contains("done")) {
+                    library[i].read = false;
+                    btnRead.textContent = "Reading";
+                    btnRead.classList.remove("done");
+                } else {
+                    library[i].read = true;
+                    btnRead.classList.add("done");
+                    btnRead.textContent = "Read";
+                }
+            })
+
+            btnRemove.addEventListener("click", () => {
+                library.splice(i, 1);
+                clearLibrary();
+                this.displayLibrary();
+            })
+
+            // Append info to book-card
+            book.appendChild(titleHeader);
+            book.appendChild(title);
+
+            book.appendChild(authorHeader);
+            book.appendChild(author);
+
+            book.appendChild(pagesHeader);
+            book.appendChild(pages);
+
+            book.appendChild(divButtons);
+
+            // Add book to library div
+            elemLibrary.appendChild(book);
+        }
+    }
+}
+
+const cntrlr = new Controller();
+
 // Function for displaying all books contained in library
-function displayLibrary() {
-    for (let i = 0; i < library.length; i++) {
+/*function displayLibrary() {
+     for (let i = 0; i < library.length; i++) {
         // Create element for the book-card
         const book = document.createElement("div");
         book.classList.add("book")
@@ -112,7 +187,7 @@ function displayLibrary() {
         // Add book to library div
         elemLibrary.appendChild(book);
     }
-}
+} */
 
 // Function for adding new books
 function addBookToLibrary(title, author, pages) {
@@ -152,7 +227,7 @@ btnAdd.addEventListener("click", (e) => {
         addBookToLibrary(nBookTitle, nBookAuthor, nBookPages);
 
         clearLibrary();
-        displayLibrary();
+        cntrlr.displayLibrary();
 
         inputTitle.value = "";
         inputAuthor.value = "";
